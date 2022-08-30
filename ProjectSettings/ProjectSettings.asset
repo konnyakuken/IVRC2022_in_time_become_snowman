@@ -153,7 +153,9 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.DefaultCompany.in_time_become_snowman
+    Standalone: com.DefaultCompany.in-time-become-snowman
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -609,11 +611,12 @@ PlayerSettings:
   gcIncremental: 1
   assemblyVersionValidation: 1
   gcWBarrierValidation: 0
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    Android: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Template_3D
-  metroPackageVersion: 
+  metroPackageName: Template3D
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -621,7 +624,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Template_3D
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: in_time_become_snowman
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
