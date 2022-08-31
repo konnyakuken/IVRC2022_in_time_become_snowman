@@ -12,7 +12,7 @@ public class SnowBallStatus : MonoBehaviour
 {
     public float Speed;//???]???x
     public float FieldSpeed;//?n???????????x
-    public float Size;//?????T?C?Y
+    public static float Size;//?????T?C?Y
 
     public GameObject SnowBallTracker;
     public GameObject LeftHandTracker;
@@ -41,7 +41,7 @@ public class SnowBallStatus : MonoBehaviour
         //this.gameObject.transform.position = SnowBallTracker.transform.position;
 
         //手の位置から雪玉の位置を決めるver
-        if (timer < 7)
+        if (timer < 10)
         {
             message1.text = "腕を伸ばした状態で、\n正面の雪玉を押せる位置に移動してください。";
             message2.text = "位置調整中...";
@@ -61,7 +61,7 @@ public class SnowBallStatus : MonoBehaviour
         this.gameObject.transform.localScale = new Vector3(Size, Size, Size);
 
         //???????n????????????????????????????
-        this.gameObject.transform.position = new Vector3(0, 0+Size/2, -7);
+        //this.gameObject.transform.position = new Vector3(0, 0+Size/2, -7);
 
         //?X?e?[?W????????
         Field.transform.position = new Vector3(-500, 0, -500-FieldSpeed);

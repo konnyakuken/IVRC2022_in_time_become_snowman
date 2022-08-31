@@ -2,12 +2,13 @@ using System.Collections;
 using UnityEngine;
 using System.IO.Ports;
 
+
 public class RotateWheel : MonoBehaviour
 {
     //serial communication variables
     const string portName = "COM2"; // ポート番号は自分で確認してください
     const int baudRate = 9600;
-    SerialPort serialPort_;
+    private SerialPort serialPort_;
     // Variable for speed calculation
     [SerializeField] float resetSpeedTime = 0.5f;
     float previousRotateCount = 0;
@@ -45,6 +46,8 @@ public class RotateWheel : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
         }
     }
+
+
 }
 
 
