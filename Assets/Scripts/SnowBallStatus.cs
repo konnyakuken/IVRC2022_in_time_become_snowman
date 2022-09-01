@@ -25,6 +25,20 @@ public class SnowBallStatus : MonoBehaviour
     float timer = 0;
     float endtimer = 0;
 
+    public RotateWheel rotateWheel;
+    public SerialHandler serialHandler;
+
+    //ポート先から取得したローテーションの回転数を代入する変数
+    float inputRotateCount = 0;
+    //inputRotateCountを一時的に保存しておく為の一時的な変数
+    float previousRotateCount = 0;
+    // スピードを出力する先
+    public float rotateSpeed = 0;
+    //時間の経過時間を計測するタイミングを何秒開けるかを指定してあげる
+    [SerializeField] float waitTime = 0.5f;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +46,9 @@ public class SnowBallStatus : MonoBehaviour
         Speed = 0;
         FieldSpeed = 0;
         Size = 1.65f;
+
+        //信号を受信したときに、そのメッセージの処理を行う
+        serialHandler.OnDataReceived += OnDataReceived;
     }
 
     // Update is called once per frame
@@ -40,21 +57,48 @@ public class SnowBallStatus : MonoBehaviour
         //トラッカーの位置に雪玉を持ってくるver
         //this.gameObject.transform.position = SnowBallTracker.transform.position;
 
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            serialHandler.Write("u");
+            Debug.Log("aaaa");
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            serialHandler.Write("d");
+        }
+        else {
+            serialHandler.Write("s");
+        }
+
         //手の位置から雪玉の位置を決めるver
         if (timer < 10)
         {
             message1.text = "腕を伸ばした状態で、\n正面の雪玉を押せる位置に移動してください。";
             message2.text = "位置調整中...";
             timer += Time.deltaTime;
-            SnowFirstPos.transform.position = new Vector3(LeftHandTracker.transform.position.x, LeftHandTracker.transform.position.y - 0.45f, LeftHandTracker.transform.position.z + 0.78f);
+            SnowFirstPos.transform.position = new Vector3(LeftHandTracker.transform.position.x, LeftHandTracker.transform.position.y - 0.45f, LeftHandTracker.transform.position.z + 0.85f);
         }
         else
         {
             message1.text = "";
             message2.text = "";
             this.gameObject.transform.position = SnowFirstPos.transform.position;
-        }
 
+            //speed調整
+            
+            if (rotateSpeed == 0)
+            {
+                Speed = 0;
+            }
+            else
+            {
+                Speed = rotateSpeed + 2f;
+                //message1.text = Speed.ToString();
+            }
+        }
+        
+        
         Size += Speed * 0.001f;
         FieldSpeed += Speed *0.02f;
         this.gameObject.transform.Rotate(new Vector3(Speed, 0, 0));
@@ -81,5 +125,30 @@ public class SnowBallStatus : MonoBehaviour
         this.gameObject.transform.position = new Vector3(0, 0, 0);
         SnowFirstPos.transform.position = new Vector3(LeftHandTracker.transform.position.x, LeftHandTracker.transform.position.y - 0.45f, LeftHandTracker.transform.position.z + 0.78f);
         timer = 0;
+    }
+
+
+    //受信した信号(message)に対する処理
+    void OnDataReceived(string message)
+    {
+        var data = message.Split(
+                new string[] { "\n" }, System.StringSplitOptions.None);
+        
+        try
+        {
+            inputRotateCount = float.Parse( data[0]);
+            //スピードを求める
+            //inputRotateCount(今回の回転数) - previousRotateCount(前回の回転数)で回転した距離を求める
+            //回転数を速度を計算するまでの待機時間(waitTime)で割ることで、速度を求める。
+            rotateSpeed = ((inputRotateCount - previousRotateCount) / waitTime) / 70;
+            //今の回転数を次回に計算できるようにする為にpreviousRotateCountへ保存する
+            previousRotateCount = inputRotateCount;
+            // waitTimeで指定した秒数ループします
+            //Debug.Log(rotateSpeed);//Unityのコンソールに受信データを表示
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning(e.Message);//エラーを表示
+        }
     }
 }

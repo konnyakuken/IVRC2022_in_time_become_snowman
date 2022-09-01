@@ -2,53 +2,56 @@ using System.Collections;
 using UnityEngine;
 using System.IO.Ports;
 
-
 public class RotateWheel : MonoBehaviour
 {
-    //serial communication variables
+    //ポートを指定してあげる
     const string portName = "COM2"; // ポート番号は自分で確認してください
+    // baudRateはマイコンのbaudRateと一致させる
     const int baudRate = 9600;
-    private SerialPort serialPort_;
-    // Variable for speed calculation
+    SerialPort serialPort_;
+    //時間の経過時間を計測するタイミングを何秒開けるかを指定してあげる
     [SerializeField] float resetSpeedTime = 0.5f;
-    float previousRotateCount = 0;
+    //ポート先から取得したローテーションの回転数を代入する変数
     float inputRotateCount = 0;
+    //inputRotateCountを一時的に保存しておく為の一時的な変数
+    float previousRotateCount = 0;
+    // スピードを出力する先
     public float speed = 0;
+
     private void Start()
     {
-        Debug.Log("0"); 
+        // SerialPort型の構造体を新しく作る
         serialPort_ = new SerialPort(portName, baudRate);
-        Debug.Log("start!!");
+        // SerialPortを開く
         serialPort_.Open();
-        Debug.Log(serialPort_);
-        
+        // スピードを計算する為の処理を行うこルーチンSpeedCheckerをresetSpeedTime毎に実行する
         StartCoroutine(SpeedChecker(resetSpeedTime));
     }
-    // Update is called once per frame
+
     void Update()
     {
+        //もしシリアルポートが接続されていたら
         if (serialPort_.IsOpen)
         {
+            //シリアルポートで出力されている値をUnityで使えるように取得する
             float.TryParse(serialPort_.ReadLine(), out inputRotateCount);
-            Debug.Log(inputRotateCount);
         }
     }
-    IEnumerator SpeedChecker(float waitTime = 1)
+
+    IEnumerator SpeedChecker(float waitTime = 0.1f)
     {
+        //無限にループさせる
         while (true)
         {
-            Debug.Log("inputRotateCount : " + inputRotateCount);
-            Debug.Log("previousRotateCount : " + previousRotateCount);
-            speed = ((inputRotateCount - previousRotateCount) / resetSpeedTime) / 70;
-            Debug.Log("speed : " + speed);
+            //スピードを求める
+            //inputRotateCount(今回の回転数) - previousRotateCount(前回の回転数)で回転した距離を求める
+            //回転数を速度を計算するまでの待機時間(waitTime)で割ることで、速度を求める。
+            speed = ((inputRotateCount - previousRotateCount) / waitTime) / 70;
+            //今の回転数を次回に計算できるようにする為にpreviousRotateCountへ保存する
             previousRotateCount = inputRotateCount;
-            // secondで指定した秒数ループします
+            // waitTimeで指定した秒数ループします
+            Debug.Log(speed);
             yield return new WaitForSeconds(waitTime);
         }
     }
-
-
 }
-
-
-

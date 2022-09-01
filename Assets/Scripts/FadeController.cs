@@ -14,6 +14,7 @@ public class FadeController : MonoBehaviour
 	public static bool isFadeIn = false;   //フェードイン処理の開始、完了を管理するフラグ
 
 	Image fadeImage;                //透明度を変更するパネルのイメージ
+	
 
 	void Start()
 	{
