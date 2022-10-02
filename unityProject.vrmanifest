@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.in_time_become_snowman.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\ivrc\\Downloads\\IVRC2022_in_time_become_snowman-develop\\IVRC2022_in_time_become_snowman-develop\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "C:\\Users\\ivrc\\Desktop\\IVRC2022_in_time_become_snowman-develop\\IVRC2022_in\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "in_time_become_snowman [Testing]"

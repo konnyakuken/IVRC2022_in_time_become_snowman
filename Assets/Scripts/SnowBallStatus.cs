@@ -59,11 +59,16 @@ public class SnowBallStatus : MonoBehaviour
     {
         //トラッカーの位置に雪玉を持ってくるver
         //this.gameObject.transform.position = SnowBallTracker.transform.position;
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Restart!");
+            RePosButton();
 
+        }
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-
+            Debug.Log("a");
             upperSerialHandler.serialPort_.Write("u");
 
         }
@@ -95,7 +100,7 @@ public class SnowBallStatus : MonoBehaviour
             isJack = 2;
             upperSerialHandler.serialPort_.Write("u");
 
-            DOVirtual.DelayedCall(3.0f, () => {
+            DOVirtual.DelayedCall(3.5f, () => {
                 upperSerialHandler.serialPort_.Write("d");
             });
 
@@ -105,7 +110,7 @@ public class SnowBallStatus : MonoBehaviour
             isJack = 3;
             upperSerialHandler.serialPort_.Write("u");
 
-            DOVirtual.DelayedCall(3.0f, () => {
+            DOVirtual.DelayedCall(4.0f, () => {
                 upperSerialHandler.serialPort_.Write("d");
             });
 
