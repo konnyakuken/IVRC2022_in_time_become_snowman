@@ -7,7 +7,7 @@ using System.Threading;
 
 public class UpperSerialHandler : MonoBehaviour
 {
-    const string portName = "COM7"; // ポート番号は自分で確認してください
+    const string portName = "COM3"; // ジャッキのぽーと
     const int baudRate = 9600;
     public SerialPort serialPort_ = new SerialPort(portName, baudRate);
 

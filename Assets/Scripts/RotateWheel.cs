@@ -5,7 +5,7 @@ using System.IO.Ports;
 public class RotateWheel : MonoBehaviour
 {
     //ポートを指定してあげる
-    const string portName = "COM2"; // ポート番号は自分で確認してください
+    const string portName = "COM4"; // ポート番号は自分で確認してください
     // baudRateはマイコンのbaudRateと一致させる
     const int baudRate = 9600;
     SerialPort serialPort_;
