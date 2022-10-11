@@ -19,12 +19,15 @@ public class SnowBallStatus : MonoBehaviour
     public GameObject LeftHandTracker;
     public GameObject SnowFirstPos;
     public GameObject Field;
+    public GameObject FirstSnowBall;
 
     public Text message1;
     public Text message2;
 
-    float timer = 0;
-    float endtimer = 0;
+    float SnowBallSetTimer = 0;//位置調整タイマー
+    bool FirstAlreadyEnd = false;//１個目が完成したかどうか
+    float FirstEndtimer = 0;//２個目移行待ちタイマー
+    float SecondEndtimer = 0;//終了画面移行待ちタイマー
 
     public RotateWheel rotateWheel;
     public SerialHandler serialHandler;
@@ -48,7 +51,9 @@ public class SnowBallStatus : MonoBehaviour
         Speed = 0;
         FieldSpeed = 0;
         Size = 1.65f;
-        
+
+        FirstSnowBall.SetActive(false);
+
         //信号を受信したときに、そのメッセージの処理を行う
         serialHandler.OnDataReceived += OnDataReceived;
         upperSerialHandler.serialPort_.Write("d");
@@ -57,8 +62,6 @@ public class SnowBallStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //トラッカーの位置に雪玉を持ってくるver
-        //this.gameObject.transform.position = SnowBallTracker.transform.position;
         if (Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("Restart!");
@@ -117,11 +120,11 @@ public class SnowBallStatus : MonoBehaviour
         }
 
         //手の位置から雪玉の位置を決めるver
-        if (timer < 10)
+        if (SnowBallSetTimer < 10)
         {
             message1.text = "腕を伸ばした状態で、\n正面の雪玉を押せる位置に移動してください。";
             message2.text = "位置調整中...";
-            timer += Time.deltaTime;
+            SnowBallSetTimer += Time.deltaTime;
             SnowFirstPos.transform.position = new Vector3(LeftHandTracker.transform.position.x, LeftHandTracker.transform.position.y - 0.45f, LeftHandTracker.transform.position.z + 0.85f);
         }
         else
@@ -153,23 +156,43 @@ public class SnowBallStatus : MonoBehaviour
         //this.gameObject.transform.position = new Vector3(0, 0+Size/2, -7);
 
         //?X?e?[?W????????
+        if(FirstAlreadyEnd) FirstSnowBall.transform.position = new Vector3(0, 1.65f, 32-FieldSpeed);
         Field.transform.position = new Vector3(-500, 0, -500-FieldSpeed);
 
-        if (this.gameObject.transform.localScale.x > 3) End();
+        if (this.gameObject.transform.localScale.x > 3 && !FirstAlreadyEnd) FirstCompleted();
+        if (this.gameObject.transform.localScale.x > 3 && FirstAlreadyEnd) SecondCompleted();
     }
 
-    public void End()
+    public void FirstCompleted()
+    {       
+        FadeController.isFadeOut = true;
+        FirstEndtimer += Time.deltaTime;
+        if (FirstEndtimer > 6)
+        {
+            //２個目設置処理
+            Speed = 0;
+            FieldSpeed = 0;
+            Size = 1.65f;
+            RePosButton();
+            //
+            FirstSnowBall.SetActive(true);
+            FirstAlreadyEnd = true;
+            FadeController.isFadeIn = true;
+        }
+    }
+
+    public void SecondCompleted()
     {
         FadeController.isFadeOut = true;
-        endtimer += Time.deltaTime;
-        if(endtimer > 3) SceneManager.LoadScene("EndScene");
+        SecondEndtimer += Time.deltaTime;
+        if (SecondEndtimer > 3) SceneManager.LoadScene("EndScene");
     }
 
     public void RePosButton()//位置再調整ボタンが押されたとき
     {
         this.gameObject.transform.position = new Vector3(0, 0, 0);
         SnowFirstPos.transform.position = new Vector3(LeftHandTracker.transform.position.x, LeftHandTracker.transform.position.y - 0.45f, LeftHandTracker.transform.position.z + 0.78f);
-        timer = 0;
+        SnowBallSetTimer = 0;
     }
 
 
