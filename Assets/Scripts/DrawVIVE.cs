@@ -10,9 +10,10 @@ public class DrawVIVE : MonoBehaviour
     private bool RightControllerOn;
 
     public Transform anchor;
-    private float maxDistance = 100;
+    public GameObject Ink_Black;
+    private float maxDistance = 200;
     private LineRenderer line;
-    private bool isRotating = false;
+   
 
     void Start()
     {
@@ -37,14 +38,16 @@ public class DrawVIVE : MonoBehaviour
             // レーザーの終点（オブジェクトにぶつかった場合）
             line.SetPosition(1, hit.point);
 
-            // 変化（回転）
+            //照射先のオブジェクト（コライダー）
             GameObject target = hit.collider.gameObject;
 
             if (RightControllerOn)
             {
                 if (target.CompareTag("SnowBall"))
                 {
-                    Debug.Log("hit");
+                    Debug.Log("Drawing");
+                    GameObject Ink_blackCopy = Instantiate(Ink_Black) as GameObject;
+                    Ink_blackCopy.transform.position = hit.point;
                 }
             }
         }
