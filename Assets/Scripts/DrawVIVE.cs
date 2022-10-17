@@ -9,7 +9,8 @@ public class DrawVIVE : MonoBehaviour
     //結果の格納用Boolean型関数interacrtui
     private bool RightControllerOn;
 
-    public Transform anchor;
+    public GameObject R_ctrlPos;
+    public Transform DrawingObjects;
     public GameObject Ink_Black;
     private float maxDistance = 200;
     private LineRenderer line;
@@ -28,7 +29,7 @@ public class DrawVIVE : MonoBehaviour
         RightControllerOn = Iui.GetState(SteamVR_Input_Sources.RightHand);
 
         RaycastHit hit;
-        Ray ray = new Ray(anchor.position, anchor.forward);
+        Ray ray = new Ray(R_ctrlPos.transform.position, R_ctrlPos.transform.forward);
 
         // レーザーの起点
         line.SetPosition(0, ray.origin);
@@ -46,9 +47,18 @@ public class DrawVIVE : MonoBehaviour
                 if (target.CompareTag("SnowBall"))
                 {
                     Debug.Log("Drawing");
-                    GameObject Ink_blackCopy = Instantiate(Ink_Black) as GameObject;
+                    GameObject Ink_blackCopy = Instantiate(Ink_Black, DrawingObjects) as GameObject;
                     Ink_blackCopy.transform.position = hit.point;
                 }
+                if (target.CompareTag("DrawFinish"))
+                {
+                    Debug.Log("お絵描きを終了します");
+
+                    //ここに終了処理を入れる（仮）
+                    this.gameObject.SetActive(false);
+                    //
+                }
+
             }
         }
         else
