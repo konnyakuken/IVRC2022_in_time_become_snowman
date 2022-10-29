@@ -31,7 +31,6 @@ public class SnowBallStatus : MonoBehaviour
 
     public RotateWheel rotateWheel;
     public SerialHandler serialHandler;
-    public UpperSerialHandler upperSerialHandler;
 
     //ポート先から取得したローテーションの回転数を代入する変数
     float inputRotateCount = 0;
@@ -52,11 +51,10 @@ public class SnowBallStatus : MonoBehaviour
         FieldSpeed = 0;
         Size = 1.65f;
 
-        FirstSnowBall.SetActive(false);
+        //FirstSnowBall.SetActive(false);
 
         //信号を受信したときに、そのメッセージの処理を行う
         serialHandler.OnDataReceived += OnDataReceived;
-        upperSerialHandler.serialPort_.Write("d");
     }
 
     // Update is called once per frame
@@ -68,59 +66,44 @@ public class SnowBallStatus : MonoBehaviour
             RePosButton();
 
         }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            Debug.Log("a");
-            upperSerialHandler.serialPort_.Write("u");
-
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            upperSerialHandler.serialPort_.Write("d");
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            upperSerialHandler.serialPort_.Write("s");
-        }
-
         
-        if (FieldSpeed <=1){
+        
+        /*if (FieldSpeed <=1){
             upperSerialHandler.serialPort_.Write("d");
-        }
+        }*/
 
         if (FieldSpeed >= 5 && isJack == 0) {
             isJack = 1;
-            upperSerialHandler.serialPort_.Write("u");
+            //upperSerialHandler.serialPort_.Write("u");
 
             DOVirtual.DelayedCall(3.0f, () => {
-                upperSerialHandler.serialPort_.Write("d");
+                //upperSerialHandler.serialPort_.Write("d");
             });
 
         }
         else if (FieldSpeed >= 15 && isJack == 1)
         {
             isJack = 2;
-            upperSerialHandler.serialPort_.Write("u");
+            //upperSerialHandler.serialPort_.Write("u");
 
             DOVirtual.DelayedCall(3.5f, () => {
-                upperSerialHandler.serialPort_.Write("d");
+                //upperSerialHandler.serialPort_.Write("d");
             });
 
         }
         else if (FieldSpeed >= 20 && isJack == 2)
         {
             isJack = 3;
-            upperSerialHandler.serialPort_.Write("u");
+            //upperSerialHandler.serialPort_.Write("u");
 
             DOVirtual.DelayedCall(4.0f, () => {
-                upperSerialHandler.serialPort_.Write("d");
+                //upperSerialHandler.serialPort_.Write("d");
             });
 
         }
 
         //手の位置から雪玉の位置を決めるver
-        if (SnowBallSetTimer < 10)
+        /*if (SnowBallSetTimer < 10)
         {
             message1.text = "腕を伸ばした状態で、\n正面の雪玉を押せる位置に移動してください。";
             message2.text = "位置調整中...";
@@ -144,7 +127,7 @@ public class SnowBallStatus : MonoBehaviour
                 Speed = rotateSpeed + 2f;
                 //message1.text = Speed.ToString();
             }
-        }
+        }*/
         
         
         Size += Speed * 0.001f;
@@ -157,7 +140,7 @@ public class SnowBallStatus : MonoBehaviour
 
         //?X?e?[?W????????
         if(FirstAlreadyEnd) FirstSnowBall.transform.position = new Vector3(0, 1.65f, 32-FieldSpeed);
-        Field.transform.position = new Vector3(-500, 0, -500-FieldSpeed);
+        //Field.transform.position = new Vector3(-500, 0, -500-FieldSpeed);
 
         if (this.gameObject.transform.localScale.x > 3 && !FirstAlreadyEnd) FirstCompleted();
         if (this.gameObject.transform.localScale.x > 3 && FirstAlreadyEnd) SecondCompleted();

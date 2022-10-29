@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using System.IO.Ports;
@@ -5,7 +6,7 @@ using System.IO.Ports;
 public class RotateWheel : MonoBehaviour
 {
     //ポートを指定してあげる
-    const string portName = "COM4"; // ポート番号は自分で確認してください
+    public string portName = "COM4"; // ポート番号は自分で確認してください
     // baudRateはマイコンのbaudRateと一致させる
     const int baudRate = 9600;
     SerialPort serialPort_;
@@ -35,6 +36,15 @@ public class RotateWheel : MonoBehaviour
         {
             //シリアルポートで出力されている値をUnityで使えるように取得する
             float.TryParse(serialPort_.ReadLine(), out inputRotateCount);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (serialPort_ != null && serialPort_.IsOpen)
+        {
+            serialPort_.Close();
+            serialPort_.Dispose();
         }
     }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Arduino/RotateWheel.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Arduino/UpperSerialHandler.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/RotateWheel.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/SerialHandler.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/SnowBallStatus.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/UpperSerialHandler.cs" charset="windows-31j" />
+  </component>
+</project>
